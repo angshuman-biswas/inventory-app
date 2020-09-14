@@ -78,9 +78,9 @@ app.get('/items/:id', (req, res) => {
 });
 
 app.post('/items/create', (req, res) => {
+    console.log('req.body: ', req.body);
     conn.query(`INSERT INTO Items (item_name) VALUES (?)`, [req.body.value], function (err, result) {
         if (err) {
-            console.log('Error: ' + err.sqlMessage);
             res.status(500).send(
                 {
                     success: false,
@@ -115,7 +115,7 @@ app.put('/items/update/:id', (req, res) => {
 
 
 app.delete('/items/:id', (req, res) => {
-    conn.query(`DELETE FROM Items WHERE item_id=?`, [req.body.value, req.params.id],
+    conn.query(`DELETE FROM Items WHERE item_id=?`, [req.params.id],
         function (err, result) {
             if (err) {
                 console.log('Error: ' + err.sqlMessage);
