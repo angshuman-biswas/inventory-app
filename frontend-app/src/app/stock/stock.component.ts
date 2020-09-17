@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { ItemsService } from '../services/items.service';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-stock',
@@ -7,7 +10,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockComponent implements OnInit {
 
-  constructor() { }
+  stockData: any = [];
+  dataSource: MatTableDataSource<any>;
+  @ViewChild('MatPaginator', { static: false }) paginator: MatPaginator;
+  displayedColumns: string[] = ['item_name', 'location_name', 'quantity', 'action'];
+
+
+  constructor(
+    private its: ItemsService,
+    private ms: MessageService,
+  ) {
+    this.its.getStock().subscribe(data => {
+      if (data.success) {
+        this.stockData = data.result;
+        this.dataSource = new MatTableDataSource<any>(this.stockData);
+        setTimeout(() => {
+          this.dataSource.paginator = this.paginator;
+        }, 0);
+      } else {
+        this.ms.openSnackBar(data.message, 'OK', 5000);
+      }
+    });
+  }
 
   ngOnInit() {
   }

@@ -229,7 +229,9 @@ app.delete('/locations/:id', (req, res) => {
 
 // CRUD APIs for Stock
 app.get('/stock', (req, res) => {
-    conn.query(`SELECT it.item_id, it.item_name, l.location_name FROM Stock st LEFT JOIN Items it ON it.item_id=st.stock_id LEFT JOIN Locations l ON l.location_id=st.location_id`,
+    conn.query(`SELECT it.item_id, it.item_name, SUM(st.quantity) AS quantity, GROUP_CONCAT(l.location_name) ` +
+        `AS location_name FROM Stock st LEFT JOIN Items it ON it.item_id=st.stock_id RIGHT JOIN Locations l ON l.location_id=st.location_id` +
+        ` GROUP BY it.item_id HAVING it.item_id IS NOT NULL;`,
         function (err, result) {
             if (err) {
                 console.log('Error: ' + err.sqlMessage);
@@ -313,8 +315,9 @@ app.put('/stock/update', (req, res) => {
         });
 });
 
-app.delete('/stock/:id/:lid', (req, res) => {
-    conn.query(`DELETE FROM Stock WHERE stock_id=? AND location_id=?`, [req.params.id, req.params.lid],
+app.delete('/stock/:id/:lname', (req, res) => {
+    conn.query(`DELETE FROM Stock WHERE stock_id=? AND location_id IN (SELECT l.location_id FROM ` +
+        `Locations l WHERE l.location_name=?)`, [req.params.id, req.params.lname],
         function (err, result) {
             if (err) {
                 console.log('Error: ' + err.sqlMessage);
@@ -334,7 +337,8 @@ app.delete('/stock/:id/:lid', (req, res) => {
 
 // CRUD APIs for Purchases
 app.get('/purchases', (req, res) => {
-    conn.query(`SELECT p.PO_No, p.item_id, it.item_name, p.quantity FROM Purchases p LEFT JOIN Items it ON p.item_id=it.item_id`,
+    conn.query(`SELECT p.PO_No, COUNT(p.item_id) AS item_count, GROUP_CONCAT(it.item_name) AS items FROM` +
+        ` Purchases p LEFT JOIN Items it ON p.item_id=it.item_id GROUP BY p.PO_No;`,
         function (err, result) {
             if (err) {
                 console.log('Error: ' + err.sqlMessage);

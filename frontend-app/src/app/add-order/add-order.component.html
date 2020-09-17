@@ -1,1 +1,42 @@
-<p>add-order works!</p>
+<div class="title-group">
+  <h1 class="mat-h1"><b>Place new order</b></h1>
+  <mat-divider fxFlex="1 0"></mat-divider>
+</div>
+<div class="inner-wrapper">
+  <form [formGroup]="orderForm">
+    <div formArrayName="orders">
+      <mat-card *ngFor="let item of orders.controls; let i=index" [formGroupName]="i">
+        <div class="controlers-wrapper">
+          <mat-form-field class="example-full-width">
+            <!-- <input matInput placeholder="Item Name" formControlName="item"> -->
+            <mat-label>Item</mat-label>
+            <mat-select formControlName="item" (selectionChange)="onSelectedItemChange($event, i)">
+              <mat-option [value]="item.item_id" *ngFor="let item of itemOptions">{{item.item_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Quantity" formControlName="quantity">
+            <mat-error *ngIf="handleError('quantity', i, 'min')">Quantity cannot be less than 1.</mat-error>
+            <mat-error *ngIf="handleError('quantity', i, 'max')">{{availableUnits}} units available.</mat-error>
+            <mat-error *ngIf="handleError('quantity', i, 'required')">This field is required.</mat-error>
+            <mat-error *ngIf="handleError('quantity', i, 'pattern')">Please enter a number.</mat-error>
+          </mat-form-field>
+          <div class="full-wrapper button-wrapper">
+            <div class="button-wrapper">
+              <button *ngIf="i>0" mat-flat-button color="warn" type="button" (click)="deleteOrderItem(i)">Delete
+                Item</button>
+              <button mat-flat-button color="primary" type="button" (click)="addOrderItem()">Add Item</button>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <mat-card>
+      <div class="full-wrapper button-wrapper">
+        <button mat-flat-button color="warn" (click)="submitOrderForm(orderForm.value)"
+          [disabled]="orderForm.invalid">Place Order</button>
+      </div>
+    </mat-card>
+  </form>
+</div>

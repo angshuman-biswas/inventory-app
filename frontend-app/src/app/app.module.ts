@@ -23,7 +23,8 @@ import {
   MatChipsModule,
   MatTooltipModule,
   MatTableModule,
-  MatPaginatorModule, MatSnackBarModule
+  MatPaginatorModule,
+  MatSnackBarModule,
 } from '@angular/material';
 import { OrdersComponent } from './orders/orders.component';
 import { PurchasesService } from './services/purchases.service';
@@ -33,6 +34,10 @@ import { ItemsComponent } from './items/items.component';
 import { LocationsComponent } from './locations/locations.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StockDetailsComponent } from './stock-details/stock-details.component';
+import { ItemsService } from './services/items.service';
+import { AddStockComponent } from './add-stock/add-stock.component';
+import { OrderDetailsComponent } from './order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +48,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AddOrderComponent,
     ItemsComponent,
     LocationsComponent,
-    AddItemComponent
+    AddItemComponent,
+    StockDetailsComponent,
+    AddStockComponent,
+    OrderDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +79,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MatSnackBarModule
   ],
-  providers: [PurchasesService],
+  providers: [PurchasesService, ItemsService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

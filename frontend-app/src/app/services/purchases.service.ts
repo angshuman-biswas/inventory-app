@@ -34,4 +34,22 @@ export class PurchasesService {
         catchError(this.errorMgmt)
       );
   }
+
+  // Fetch purchase order details by PO_No
+  getPurchaseOrderById(id: string): Observable<any> {
+    const url = `${this.endpoint}/purchases/${id}`;
+    return this.http.get(url, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+  // Place a purchase order
+  placePurchaseorder(orderDetails: any): Observable<any> {
+    const url = `${this.endpoint}/purchases/create`;
+    const body = { values: orderDetails };
+    return this.http.post(url, body, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
 }

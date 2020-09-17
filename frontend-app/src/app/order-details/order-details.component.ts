@@ -1,28 +1,31 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../services/message.service';
 import { PurchasesService } from '../services/purchases.service';
 
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css'],
+  selector: 'app-order-details',
+  templateUrl: './order-details.component.html',
+  styleUrls: ['./order-details.component.css']
 })
-export class OrdersComponent implements OnInit {
+export class OrderDetailsComponent implements OnInit {
 
-  purchaseOrderData: any = [];
+  orderItems: any = [];
+  poNumber: string;
   dataSource: MatTableDataSource<any>;
   @ViewChild('MatPaginator', { static: false }) paginator: MatPaginator;
-  displayedColumns: string[] = ['PO_No', 'item_count', 'items', 'action'];
-
+  displayedColumns: string[] = ['item_name', 'quantity'];
   constructor(
     private ps: PurchasesService,
     private ms: MessageService,
+    private activatedRoute: ActivatedRoute,
   ) {
-    this.ps.getPurchases().subscribe(data => {
+    this.poNumber = this.activatedRoute.snapshot.paramMap.get('PO_No');
+    this.ps.getPurchaseOrderById(this.poNumber).subscribe(data => {
       if (data.success) {
-        this.purchaseOrderData = data.result;
-        this.dataSource = new MatTableDataSource<any>(this.purchaseOrderData);
+        this.orderItems = data.result;
+        this.dataSource = new MatTableDataSource<any>(this.orderItems);
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
         }, 0);

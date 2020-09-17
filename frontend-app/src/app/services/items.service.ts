@@ -53,4 +53,31 @@ export class ItemsService {
         catchError(this.errorMgmt)
       );
   }
+
+  // Fetch stock
+  getStock(): Observable<any> {
+    const url = `${this.endpoint}/stock`;
+    return this.http.get(url, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+
+  // Fetch stock by item id
+  getStockById(id: string): Observable<any> {
+    const url = `${this.endpoint}/stock/${id}`;
+    return this.http.get(url, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+
+  // Delete stock item by item_id and location_name
+  deleteStockById(id: string, lname: string): Observable<any> {
+    const url = `${this.endpoint}/stock/${id}/${lname}`;
+    return this.http.delete(url, { headers: this.headers })
+    .pipe(
+      catchError(this.errorMgmt)
+    );
+  }
 }
