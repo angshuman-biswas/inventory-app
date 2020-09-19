@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddItemComponent } from './add-item/add-item.component';
+import { AddLocationComponent } from './add-location/add-location.component';
 import { AddOrderComponent } from './add-order/add-order.component';
 import { AddStockComponent } from './add-stock/add-stock.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -13,7 +14,7 @@ import { StockComponent } from './stock/stock.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomePageComponent },
+  { path: '', component: StockComponent },
   { path: 'stock-list', component: StockComponent },
   { path: 'stock-details/:item_id', component: StockDetailsComponent },
   { path: 'stock-list/add', component: AddStockComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'items', component: ItemsComponent },
   { path: 'items/add', component: AddItemComponent },
   { path: 'locations', component: LocationsComponent },
+  { path: 'locations/add', component: AddLocationComponent },
 
 ];
 

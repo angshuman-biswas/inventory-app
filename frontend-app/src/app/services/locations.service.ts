@@ -1,13 +1,13 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PurchasesService {
+export class LocationsService {
 
   private endpoint = environment.API_URL;
   private headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -15,7 +15,7 @@ export class PurchasesService {
   constructor(private http: HttpClient) { }
 
   // Error handling 
-  errorMgmt(error: HttpErrorResponse) {
+  private errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
@@ -28,28 +28,39 @@ export class PurchasesService {
     return throwError(errorMessage);
   }
 
-  // Fetch Purchase Orders
-  getPurchases(): Observable<any> {
-    const url = `${this.endpoint}/purchases`;
+  // Fetch locations
+  getLocations(): Observable<any> {
+    const url = `${this.endpoint}/locations`;
     return this.http.get(url, { headers: this.headers })
       .pipe(
         catchError(this.errorMgmt)
       );
   }
 
-  // Fetch purchase order details by PO_No
-  getPurchaseOrderById(id: string): Observable<any> {
-    const url = `${this.endpoint}/purchases/${id}`;
-    return this.http.get(url, { headers: this.headers })
+  // Add new location
+  addLocation(locationName: string): Observable<any> {
+    const url = `${this.endpoint}/locations/create`;
+    const body = { value: locationName };
+    return this.http.post(url, body, { headers: this.headers })
       .pipe(
         catchError(this.errorMgmt)
       );
   }
-  // Place a purchase order
-  placePurchaseorder(orderDetails: any): Observable<any> {
-    const url = `${this.endpoint}/purchases/create`;
-    const body = { values: orderDetails };
-    return this.http.post(url, body, { headers: this.headers })
+
+  // Update a location name
+  updateLocation(value: any): Observable<any> {
+    const url = `${this.endpoint}/locations/${value.id}`;
+    const body = { value: value.newName };
+    return this.http.put(url, body, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+
+  // Delete a locatiohn
+  deleteLocation(id: any): Observable<any> {
+    const url = `${this.endpoint}/locations/${id}`;
+    return this.http.delete(url, { headers: this.headers })
       .pipe(
         catchError(this.errorMgmt)
       );

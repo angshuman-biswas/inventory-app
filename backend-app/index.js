@@ -23,7 +23,7 @@ function createTables() {
         });
 
     conn.query(`CREATE TABLE IF NOT EXISTS Stock (stock_id MEDIUMINT NOT NULL REFERENCES Items(item_id),` +
-        `location_id MEDIUMINT REFERENCES Locations(location_id),quantity SMALLINT CHECK (quantity > 0),` +
+        `location_id MEDIUMINT REFERENCES Locations(location_id),quantity SMALLINT CHECK (quantity >= 0),` +
         ` PRIMARY KEY (stock_id, location_id));`,
         function (err) {
             if (err) throw err;
@@ -250,7 +250,7 @@ app.get('/stock', (req, res) => {
 });
 
 app.get('/stock/:id', (req, res) => {
-    conn.query(`select it.item_id, it.item_name, st.quantity, l.location_name from Stock st LEFT JOIN Items it` +
+    conn.query(`select it.item_id, it.item_name, st.quantity, l.location_id, l.location_name from Stock st LEFT JOIN Items it` +
         ` ON it.item_id=st.stock_id LEFT JOIN Locations l ON l.location_id=st.location_id WHERE it.item_id=?`,
         [req.params.id], function (err, result) {
             if (err) {
@@ -269,8 +269,9 @@ app.get('/stock/:id', (req, res) => {
 });
 
 app.post('/stock/create', (req, res) => {
-    conn.query(`INSERT INTO Stock (stock_id, location_id, quantity) VALUES (?,?,?)`,
-        [req.body.stockId, req.body.locationId, req.body.quantity],
+    conn.query(`INSERT INTO Stock (stock_id, location_id, quantity) VALUES (?,?,?) ON DUPLICATE KEY` +
+        ` UPDATE quantity=quantity+?`,
+        [req.body.stockId, req.body.locationId, req.body.quantity, req.body.quantity],
         function (err, result) {
             if (err) {
                 console.log('Error: ' + err.sqlMessage);
@@ -294,7 +295,7 @@ app.post('/stock/create', (req, res) => {
         });
 });
 
-app.put('/stock/update', (req, res) => {
+app.patch('/stock/update', (req, res) => {
     conn.query(`UPDATE Stock SET quantity=? WHERE stock_id=? AND location_id=?`,
         [req.body.quantity, req.body.stockId, req.body.locationId],
         function (err, result) {
@@ -308,10 +309,38 @@ app.put('/stock/update', (req, res) => {
                     });
                 return;
             }
-            console.log('[PUT] stock with id: ' + req.body.stockId + ' and location id: ' + req.body.locationId
+            console.log('[PATCH] stock with id: ' + req.body.stockId + ' and location id: ' + req.body.locationId
                 + ' quantity updated to ' + req.body.quantity + ' units successfully.'
                 + '\n' + result.affectedRows + ' record(s) affected.');
             res.status(200).send(req.body);
+        });
+});
+
+// API to move stock item from one location to another
+app.put('/stock/move', (req, res) => {
+    const queryString = `UPDATE Stock s SET s.quantity=s.quantity-? WHERE s.stock_id=? AND s.location_id=?;
+    INSERT INTO Stock (stock_id, location_id, quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE quantity=quantity+?`;
+
+    conn.query(queryString,
+        [req.body.quantity, req.body.stockId, req.body.fromLocationId,
+        req.body.stockId, req.body.toLocationId, req.body.quantity, req.body.quantity],
+        function (err, result) {
+            if (err) {
+                console.log('Error: ' + err.sqlMessage);
+                res.status(500).send(
+                    {
+                        success: false,
+                        message: err.sqlMessage,
+                        error: err.code
+                    });
+                return;
+            }
+            console.log('[PUT] stock item with id:' + req.body.stockId + ' moved from location_id: ' + req.body.fromLocationId
+                + ' to location_id: ' + req.body.toLocationId);
+            res.status(200).send({
+                success: true,
+                result: req.body
+            });
         });
 });
 

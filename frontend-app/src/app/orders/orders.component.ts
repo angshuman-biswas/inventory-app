@@ -32,6 +32,10 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  doFilter(value: string) {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+
   ngOnInit() {
   }
 

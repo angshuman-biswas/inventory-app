@@ -1,22 +1,11 @@
-<div class="title-group">
-  <h1 class="mat-h1"><b>Add Stock Item</b></h1>
-  <mat-divider fxFlex="1 0"></mat-divider>
-</div>
-<div class="inner-wrapper">
-  <form [formGroup]="stockItemForm">
+<h2 mat-dialog-title>Where do you want to move the item to?</h2>
+<mat-dialog-content>
+  <form [formGroup]="moveStockForm">
     <mat-card>
       <div class="controlers-wrapper">
         <mat-form-field class="example-full-width">
-          <mat-label>Item</mat-label>
-          <mat-select formControlName="item" (selectionChange)="onSelectedItemChange($event)">
-            <mat-option [value]="item.item_id" *ngFor="let item of itemOptions">{{item.item_name}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="handleError('item','required')">This field is required.</mat-error>
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <mat-label>Stock Location</mat-label>
-          <mat-select formControlName="location" (selectionChange)="onSelectedLocationChange($event)">
+          <mat-label>Location</mat-label>
+          <mat-select formControlName="location">
             <mat-option [value]="location.location_id" *ngFor="let location of locationOptions">
               {{location.location_name}}
             </mat-option>
@@ -31,11 +20,11 @@
         </mat-form-field>
         <div class="full-wrapper button-wrapper">
           <div class="button-wrapper">
-            <button mat-flat-button color="primary" type="button" (click)="saveStockItem(stockItemForm.value)"
-              [disabled]="stockItemForm.invalid">Save</button>
+            <button mat-flat-button color="primary" type="button" (click)="moveStockItem(moveStockForm.value)"
+              [disabled]="moveStockForm.invalid">Move</button>
           </div>
         </div>
       </div>
     </mat-card>
   </form>
-</div>
+</mat-dialog-content>

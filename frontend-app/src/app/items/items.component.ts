@@ -38,10 +38,10 @@ export class ItemsComponent implements OnInit {
     console.log(element);
     this.its.deleteItem(element.item_id).subscribe(data => {
       if (data.success) {
-        this.ms.openSnackBar('Item deleted successfully', 'OK', 5000);
-        this.ms.openSnackBar('Reloading page ...', 'OK', 1000);
-        window.location.reload();
-
+        this.ms.openSnackBar('Item deleted successfully. Reloading page ...', 'OK', 3000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       } else {
         this.ms.openSnackBar(data.message, 'OK', 5000);
       }

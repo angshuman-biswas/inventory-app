@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
+import { MoveStockComponent } from '../move-stock/move-stock.component';
 import { ItemsService } from '../services/items.service';
 import { MessageService } from '../services/message.service';
 
@@ -20,6 +21,7 @@ export class StockDetailsComponent implements OnInit {
     private its: ItemsService,
     private ms: MessageService,
     private activatedRoute: ActivatedRoute,
+    private matDialog: MatDialog
   ) {
     this.its.getStockById(this.activatedRoute.snapshot.paramMap.get('item_id')).subscribe(data => {
       if (data.success) {
@@ -44,6 +46,15 @@ export class StockDetailsComponent implements OnInit {
         this.ms.openSnackBar(data.message, 'OK', 5000);
       }
     });
+  }
+
+  openDialog(element) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      stockId: element.item_id,
+      fromLocationId: element.location_id
+    };
+    this.matDialog.open(MoveStockComponent, dialogConfig);
   }
 
   ngOnInit() {

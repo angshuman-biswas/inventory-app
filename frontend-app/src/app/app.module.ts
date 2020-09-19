@@ -25,6 +25,7 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatSnackBarModule,
+  MatDialogModule
 } from '@angular/material';
 import { OrdersComponent } from './orders/orders.component';
 import { PurchasesService } from './services/purchases.service';
@@ -38,6 +39,10 @@ import { StockDetailsComponent } from './stock-details/stock-details.component';
 import { ItemsService } from './services/items.service';
 import { AddStockComponent } from './add-stock/add-stock.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { MessageService } from './services/message.service';
+import { LocationsService } from './services/locations.service';
+import { MoveStockComponent } from './move-stock/move-stock.component';
+import { AddLocationComponent } from './add-location/add-location.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,8 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
     StockDetailsComponent,
     AddStockComponent,
     OrderDetailsComponent,
+    MoveStockComponent,
+    AddLocationComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,10 +84,17 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
   ],
-  providers: [PurchasesService, ItemsService],
+  providers: [
+    PurchasesService,
+    ItemsService,
+    MessageService,
+    LocationsService
+  ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [MoveStockComponent]
 })
 export class AppModule { }

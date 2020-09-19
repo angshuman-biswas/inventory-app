@@ -1,8 +1,12 @@
 <div class="title-group">
   <h1 class="mat-h1"><b>Purchase Orders</b></h1>
   <div style="padding-bottom: 10px;">
-    <button mat-raised-button color="primary" routerLink="add">Add New Order</button>
+    <button mat-raised-button color="primary" routerLink="add">Place New Order</button>
   </div>
+  <mat-form-field fxFlex="50%">
+    <mat-label>Filter by item name</mat-label>
+    <input matInput type="text" (keyup)="doFilter($event.target.value)" autocomplete="off">
+  </mat-form-field>
   <mat-divider fxFlex="1 0"></mat-divider>
 </div>
 

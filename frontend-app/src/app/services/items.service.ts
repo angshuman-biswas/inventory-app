@@ -2,14 +2,16 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemsService {
 
-  private endpoint = 'http://localhost:9090';
+  private endpoint = environment.API_URL;
   private headers = new HttpHeaders().set('Content-Type', 'application/json');
+  
   constructor(private http: HttpClient) { }
 
   // Error handling 
@@ -76,6 +78,23 @@ export class ItemsService {
   deleteStockById(id: string, lname: string): Observable<any> {
     const url = `${this.endpoint}/stock/${id}/${lname}`;
     return this.http.delete(url, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+  // Create a new stock item entry
+  saveStockItem(body: any): Observable<any> {
+    const url = `${this.endpoint}/stock/create`;
+    return this.http.post(url, body, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+
+  // Move stock item from one location to another
+  moveStockItem(body: any): Observable<any> {
+    const url = `${this.endpoint}/stock/move`;
+    return this.http.put(url, body, { headers: this.headers })
     .pipe(
       catchError(this.errorMgmt)
     );
