@@ -268,6 +268,25 @@ app.get('/stock/:id', (req, res) => {
         });
 });
 
+app.post('/stockInfoByName', (req, res) => {
+    conn.query(`SELECT l.location_name, s.quantity FROM Stock s LEFT JOIN Items it ON s.stock_id=it.item_id LEFT JOIN` +
+        ` Locations l ON s.location_id=l.location_id WHERE it.item_name=?`, [req.body.value],
+        function (err, result) {
+            if (err) {
+                console.log('Error: ' + err.sqlMessage);
+                res.status(500).send(
+                    {
+                        success: false,
+                        message: err.sqlMessage,
+                        error: err.code
+                    });
+                return;
+            }
+            console.log('[POST] Stock information for the item: ' + req.body.value + ' retrieved successfully.');
+            res.status(200).send({ success: true, result });
+        });
+});
+
 app.post('/stock/create', (req, res) => {
     conn.query(`INSERT INTO Stock (stock_id, location_id, quantity) VALUES (?,?,?) ON DUPLICATE KEY` +
         ` UPDATE quantity=quantity+?`,
@@ -440,6 +459,25 @@ app.post('/purchases/create', async (req, res) => {
             });
     });
 
+});
+
+app.post('/purchaseOrdersByItemName', (req, res) => {
+    conn.query(`SELECT p.PO_No, p.quantity FROM Purchases p LEFT JOIN Items it ON p.item_id=it.item_id WHERE item_name=?`,
+        [req.body.value], function (err, result) {
+            if (err) {
+                console.log('Error: ' + err.sqlMessage);
+                res.status(500).send(
+                    {
+                        success: false,
+                        message: err.sqlMessage,
+                        error: err.code
+                    });
+                return;
+            }
+
+            console.log('[POST] purchase details for item: ' + req.body.value + ' retrieved successfully!');
+            res.status(200).send({ success: true, result });
+        });
 });
 
 app.delete('/purchases/:id', (req, res) => {

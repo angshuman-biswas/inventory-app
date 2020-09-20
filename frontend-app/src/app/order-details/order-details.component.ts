@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +21,7 @@ export class OrderDetailsComponent implements OnInit {
     private ps: PurchasesService,
     private ms: MessageService,
     private activatedRoute: ActivatedRoute,
+    private location: Location
   ) {
     this.poNumber = this.activatedRoute.snapshot.paramMap.get('PO_No');
     this.ps.getPurchaseOrderById(this.poNumber).subscribe(data => {
@@ -33,6 +35,10 @@ export class OrderDetailsComponent implements OnInit {
         this.ms.openSnackBar(data.message, 'OK', 5000);
       }
     });
+  }
+
+  moveBack() {
+    this.location.back();
   }
 
   ngOnInit() {

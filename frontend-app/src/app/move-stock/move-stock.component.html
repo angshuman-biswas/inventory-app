@@ -13,7 +13,7 @@
           <mat-error *ngIf="handleError('location','required')">This field is required.</mat-error>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Quantity" formControlName="quantity">
+          <input matInput placeholder="Quantity" autocomplete="off" formControlName="quantity">
           <mat-error *ngIf="handleError('quantity','min')">Quantity cannot be less than 1.</mat-error>
           <mat-error *ngIf="handleError('quantity','required')">This field is required.</mat-error>
           <mat-error *ngIf="handleError('quantity','pattern')">Please enter a number.</mat-error>

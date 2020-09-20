@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +22,8 @@ export class StockDetailsComponent implements OnInit {
     private its: ItemsService,
     private ms: MessageService,
     private activatedRoute: ActivatedRoute,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private location: Location
   ) {
     this.its.getStockById(this.activatedRoute.snapshot.paramMap.get('item_id')).subscribe(data => {
       if (data.success) {
@@ -55,6 +57,10 @@ export class StockDetailsComponent implements OnInit {
       fromLocationId: element.location_id
     };
     this.matDialog.open(MoveStockComponent, dialogConfig);
+  }
+
+  moveBack() {
+    this.location.back();
   }
 
   ngOnInit() {

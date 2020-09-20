@@ -17,15 +17,11 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
-  MatRadioModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatChipsModule,
-  MatTooltipModule,
   MatTableModule,
   MatPaginatorModule,
   MatSnackBarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTabsModule
 } from '@angular/material';
 import { OrdersComponent } from './orders/orders.component';
 import { PurchasesService } from './services/purchases.service';
@@ -43,6 +39,7 @@ import { MessageService } from './services/message.service';
 import { LocationsService } from './services/locations.service';
 import { MoveStockComponent } from './move-stock/move-stock.component';
 import { AddLocationComponent } from './add-location/add-location.component';
+import { MiscQueriesComponent } from './misc-queries/misc-queries.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +56,7 @@ import { AddLocationComponent } from './add-location/add-location.component';
     OrderDetailsComponent,
     MoveStockComponent,
     AddLocationComponent,
+    MiscQueriesComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,11 +72,6 @@ import { AddLocationComponent } from './add-location/add-location.component';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatChipsModule,
-    MatTooltipModule,
     MatTableModule,
     MatPaginatorModule,
     HttpClientModule,
@@ -86,6 +79,7 @@ import { AddLocationComponent } from './add-location/add-location.component';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatTabsModule
   ],
   providers: [
     PurchasesService,

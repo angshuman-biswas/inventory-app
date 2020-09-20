@@ -1,5 +1,10 @@
 <div class="title-group">
-  <h1 class="mat-h1"><b>Stock Details</b></h1>
+  <h1 class="mat-h1">
+    <button mat-icon-button color="primary" (click)="moveBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <b> Stock Details</b>
+  </h1>
   <h3 class="mat-h3" *ngIf="stockItems[0]">Item Name: <i>{{stockItems[0].item_name}}</i></h3>
   <mat-divider fxFlex="1 0"></mat-divider>
 </div>
@@ -33,7 +38,7 @@
           <div class="full-wrapper button-wrapper">
             <div class="button-wrapper">
               <button mat-raised-button color="primary" (click)="openDialog(element)">Move to other location</button>
-              <button mat-raised-button color="accent" (click)="removeStockItem(element)">Delete</button>
+              <button mat-raised-button color="warn" (click)="removeStockItem(element)">Delete</button>
             </div>
           </div>
         </td>

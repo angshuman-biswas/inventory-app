@@ -14,7 +14,7 @@ export class PurchasesService {
 
   constructor(private http: HttpClient) { }
 
-  // Error handling 
+  // Error handling
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -45,6 +45,17 @@ export class PurchasesService {
         catchError(this.errorMgmt)
       );
   }
+
+  // Fetch purchase info by item name
+  getPurchaseByItemName(name: string): Observable<any> {
+    const url = `${this.endpoint}/purchaseOrdersByItemName`;
+    const body = { value: name };
+    return this.http.post(url, body, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+
   // Place a purchase order
   placePurchaseorder(orderDetails: any): Observable<any> {
     const url = `${this.endpoint}/purchases/create`;

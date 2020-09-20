@@ -11,10 +11,10 @@ export class ItemsService {
 
   private endpoint = environment.API_URL;
   private headers = new HttpHeaders().set('Content-Type', 'application/json');
-  
+
   constructor(private http: HttpClient) { }
 
-  // Error handling 
+  // Error handling
   private errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -74,6 +74,16 @@ export class ItemsService {
       );
   }
 
+  // Fetch stock info by item name
+  getStockByName(item: string): Observable<any> {
+    const url = `${this.endpoint}/stockInfoByName`;
+    const body = { value: item };
+    return this.http.post(url, body, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      );
+  }
+
   // Delete stock item by item_id and location_name
   deleteStockById(id: string, lname: string): Observable<any> {
     const url = `${this.endpoint}/stock/${id}/${lname}`;
@@ -95,8 +105,8 @@ export class ItemsService {
   moveStockItem(body: any): Observable<any> {
     const url = `${this.endpoint}/stock/move`;
     return this.http.put(url, body, { headers: this.headers })
-    .pipe(
-      catchError(this.errorMgmt)
-    );
+      .pipe(
+        catchError(this.errorMgmt)
+      );
   }
 }

@@ -1,5 +1,10 @@
 <div class="title-group">
-  <h1 class="mat-h1"><b>Order Details</b></h1>
+  <h1 class="mat-h1">
+    <button mat-icon-button color="primary" (click)="moveBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <b>  Order Details</b>
+  </h1>
   <h3 class="mat-h3">Purchase Order No. <b>{{poNumber}}</b></h3>
   <mat-divider fxFlex="1 0"></mat-divider>
 </div>

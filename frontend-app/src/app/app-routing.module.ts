@@ -7,6 +7,7 @@ import { AddStockComponent } from './add-stock/add-stock.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { ItemsComponent } from './items/items.component';
 import { LocationsComponent } from './locations/locations.component';
+import { MiscQueriesComponent } from './misc-queries/misc-queries.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrdersComponent } from './orders/orders.component';
 import { StockDetailsComponent } from './stock-details/stock-details.component';
@@ -25,7 +26,7 @@ const routes: Routes = [
   { path: 'items/add', component: AddItemComponent },
   { path: 'locations', component: LocationsComponent },
   { path: 'locations/add', component: AddLocationComponent },
-
+  { path: 'queries', component: MiscQueriesComponent },
 ];
 
 @NgModule({

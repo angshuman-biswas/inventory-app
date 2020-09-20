@@ -14,7 +14,7 @@ export class LocationsService {
 
   constructor(private http: HttpClient) { }
 
-  // Error handling 
+  // Error handling
   private errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
