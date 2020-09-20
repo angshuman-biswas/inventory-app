@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost:9090'
+  API_URL: 'https://abiswas-inventory-backend.herokuapp.com'
 };
 
 /*

@@ -1,11 +1,14 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const crypto = require('crypto');
-const cors = require('cors');
-const conn = require('./connect');
 const app = express();
-app.use(bodyParser.json());
+
+const cors = require('cors');
 app.use(cors());
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+const crypto = require('crypto');
+const conn = require('./connect');
 
 function createTables() {
     conn.query(`CREATE TABLE IF NOT EXISTS Items (item_id MEDIUMINT NOT NULL AUTO_INCREMENT,` +
@@ -520,6 +523,6 @@ app.get('/purchaseDetailsPerItem/:id', (req, res) => {
 });
 
 // Server to listen for requests on port 9090
-app.listen(9090, () => {
-    console.log('Listening on port 9090');
+app.listen((process.env.PORT || 9090), () => {
+    console.log('Listening on port' + process.env.PORT || 9090);
 });
